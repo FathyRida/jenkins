@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: wep-app
+  name: wep-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wep-app
+  template:
+    metadata:
+      labels:
+        app: wep-app
+    spec:
+      containers:
+      - image: 38.242.152.166:8082/web-app:<TAG>
+        imagePullPolicy: Always
+        name: wep-app
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: wep-app
+  name: wep-app
+spec:
+  ports:
+  - nodePort: 32223
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: wep-app
+  type: NodePort
